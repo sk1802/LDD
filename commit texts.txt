@@ -1,0 +1,9 @@
+mhi: ep: Fix ring element addition by updating read pointer after write sync  
+
+Currently, the read pointer (rd_offset) is incremented before writing the  
+element to the ring via write_sync(). This can cause race conditions where  
+the hardware or another entity might see an updated read pointer before  
+the element is actually written, leading to potential inconsistencies.  
+
+This change ensures that the ring element is first written via write_sync(),  
+and only after a successful write, the read pointer is updated.  
